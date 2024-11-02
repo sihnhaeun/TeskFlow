@@ -1,13 +1,17 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
 import Page from "../../_components/Page/page";
+import Button from "../_components/Button";
 import InputField from "../_components/InputField";
 
 function SignUpPage() {
   const router = useRouter();
+
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,14 +36,17 @@ function SignUpPage() {
       return alert("가입에 실패했습니다");
     }
 
+    setIsLoggedIn(true);
     router.push("/");
     alert("가입에 성공했습니다");
   };
 
   return (
-    <Page>
-      <h2 className="text-2xl text-center font-bold">회원가입</h2>
-      <form className="flex flex-col gap-y-4" onSubmit={handleSubmitForm}>
+    <Page
+      title="Sign Up"
+      subtitle="Create an account to start your journey with us!"
+    >
+      <form className="flex flex-col gap-y-8" onSubmit={handleSubmitForm}>
         <InputField
           change={setEmail}
           label={"Email"}
@@ -60,12 +67,7 @@ function SignUpPage() {
           id={"rePassword"}
         />
 
-        <button
-          className="border rounded-lg h-10 bg-white hover:border-black active:brightness-95"
-          type="submit"
-        >
-          가입하기
-        </button>
+        <Button>Sign Up</Button>
       </form>
     </Page>
   );

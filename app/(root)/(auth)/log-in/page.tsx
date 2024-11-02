@@ -1,13 +1,17 @@
 "use client";
 
 import { supabase } from "@/supabase/client";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
 import Page from "../../_components/Page/page";
+import Button from "../_components/Button";
 import InputField from "../_components/InputField";
 
 function LogInPage() {
   const router = useRouter();
+
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,14 +30,17 @@ function LogInPage() {
       return alert("로그인에 실패했습니다");
     }
 
+    setIsLoggedIn(true);
     router.push("/");
     alert("로그인에 성공했습니다");
   };
 
   return (
-    <Page>
-      <h2 className="text-2xl text-center font-bold">로그인</h2>
-      <form className="flex flex-col gap-y-4" onSubmit={handleSubmitForm}>
+    <Page
+      title="Log In"
+      subtitle="Welcome back! Please log in to access your account"
+    >
+      <form className="flex flex-col gap-y-8" onSubmit={handleSubmitForm}>
         <InputField
           change={setEmail}
           label={"Email"}
@@ -48,12 +55,7 @@ function LogInPage() {
           id={"password"}
         />
 
-        <button
-          className="border rounded-lg h-10 bg-white hover:border-black active:brightness-95"
-          type="submit"
-        >
-          로그인
-        </button>
+        <Button>Log In</Button>
       </form>
     </Page>
   );
