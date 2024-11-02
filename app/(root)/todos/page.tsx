@@ -15,8 +15,6 @@ function TodoPage() {
   const [priority, setPriority] = useState("");
   const [category, setCategory] = useState("");
 
-  //   const [todos, setTodos] = useState<Tables<"todos">[]>([]);
-
   const handleSubmitForm: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
 
