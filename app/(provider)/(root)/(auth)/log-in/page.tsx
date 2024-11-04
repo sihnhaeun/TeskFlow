@@ -5,7 +5,7 @@ import { useAuthStore } from "@/zustand/auth.store";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
 import Page from "../../_components/Page/page";
-import Button from "../_components/Button";
+import DefaultButton from "../_components/DefaultButton";
 import InputField from "../_components/InputField";
 
 function LogInPage() {
@@ -19,7 +19,7 @@ function LogInPage() {
   const handleSubmitForm: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) return alert("빈칸이 있습니다");
+    if (!email || !password) return alert("Please fill in all fields");
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -27,12 +27,12 @@ function LogInPage() {
     });
     if (error) {
       console.log("log-in error", error);
-      return alert("로그인에 실패했습니다");
+      return alert("Login failed. Please check your email and password");
     }
 
     setIsLoggedIn(true);
     router.push("/");
-    alert("로그인에 성공했습니다");
+    alert("Login successful! Welcome back!");
   };
 
   return (
@@ -40,8 +40,12 @@ function LogInPage() {
       title="Log In"
       subtitle="Welcome back! Please log in to access your account"
     >
-      <form className="flex flex-col gap-y-8" onSubmit={handleSubmitForm}>
+      <form
+        className="flex flex-col gap-y-8 m-auto w-[480px]"
+        onSubmit={handleSubmitForm}
+      >
         <InputField
+          value={email}
           change={setEmail}
           label={"Email"}
           type={"email"}
@@ -49,13 +53,14 @@ function LogInPage() {
         />
 
         <InputField
+          value={password}
           change={setPassword}
           label={"Password"}
           type={"password"}
           id={"password"}
         />
 
-        <Button>Log In</Button>
+        <DefaultButton>Log In</DefaultButton>
       </form>
     </Page>
   );

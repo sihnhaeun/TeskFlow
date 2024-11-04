@@ -5,7 +5,7 @@ import { useAuthStore } from "@/zustand/auth.store";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
 import Page from "../../_components/Page/page";
-import Button from "../_components/Button";
+import DefaultButton from "../_components/DefaultButton";
 import InputField from "../_components/InputField";
 
 function SignUpPage() {
@@ -16,16 +16,18 @@ function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
+  const [nickname, setNickname] = useState("");
 
   const handleSubmitForm: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
 
-    if (!email || !password || !rePassword) return alert("빈칸이 있습니다");
+    if (!email || !password || !rePassword)
+      return alert("Please fill in all fields");
     if (!email.includes("@") || !email.includes("."))
-      return alert("이메일 형식에 어긋났습니다");
+      return alert("Invalid email format");
     if (!(password.length && rePassword.length > 7))
-      return alert("비밀번호는 8글자 이상으로 적어주세요");
-    if (password !== rePassword) return alert("비밀번호가 다릅니다");
+      return alert("Password must be at least 8 characters long");
+    if (password !== rePassword) return alert("Passwords do not match");
 
     const { error } = await supabase.auth.signUp({
       email,
@@ -33,12 +35,13 @@ function SignUpPage() {
     });
     if (error) {
       console.log("sign-up error", error);
-      return alert("가입에 실패했습니다");
+      return alert("Sign-up failed. Please try again");
     }
+    // 닉네임 user 테이블에 insert하기
 
     setIsLoggedIn(true);
     router.push("/");
-    alert("가입에 성공했습니다");
+    alert("Sign-up successful! Welcome!");
   };
 
   return (
@@ -46,8 +49,12 @@ function SignUpPage() {
       title="Sign Up"
       subtitle="Create an account to start your journey with us!"
     >
-      <form className="flex flex-col gap-y-8" onSubmit={handleSubmitForm}>
+      <form
+        className="flex flex-col gap-y-8 m-auto w-[480px]"
+        onSubmit={handleSubmitForm}
+      >
         <InputField
+          value={email}
           change={setEmail}
           label={"Email"}
           type={"email"}
@@ -55,19 +62,29 @@ function SignUpPage() {
         />
 
         <InputField
+          value={nickname}
+          change={setNickname}
+          label={"Nickname"}
+          type={"text"}
+          id={"nickname"}
+        />
+
+        <InputField
+          value={password}
           change={setPassword}
           label={"Password"}
           type={"password"}
           id={"password"}
         />
         <InputField
+          value={rePassword}
           change={setRePassword}
           label={"Re-enter Password"}
           type={"password"}
           id={"rePassword"}
         />
 
-        <Button>Sign Up</Button>
+        <DefaultButton>Sign Up</DefaultButton>
       </form>
     </Page>
   );

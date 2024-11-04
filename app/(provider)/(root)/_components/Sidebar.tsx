@@ -17,39 +17,57 @@ function Sidebar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   return (
-    <nav className="px-7 py-8">
-      <ul className="flex flex-col gap-y-16 w-[110px] h-[90vh] font-bold">
+    <nav className="bg-[#2C3E50] text-[#ECF0F1] px-7 py-8 w-[200px] h-screen ">
+      <ul className="flex flex-col gap-y-16  h-full font-bold">
         {isLoggedIn ? (
           <li>
-            <Link className="flex gap-x-4 items-center" href={"/"}>
+            <Link
+              className="flex gap-x-4 items-center hover:text-[#3498DB] transition"
+              href={"/"}
+            >
               <IoIosStats /> Dashboard
             </Link>
           </li>
         ) : (
           <li>
-            <Link className="flex gap-x-4 items-center" href={"/"}>
+            <Link
+              className="flex gap-x-4 items-center hover:text-[#3498DB] transition"
+              href={"/"}
+            >
               <AiOutlineHome /> Home
             </Link>
           </li>
         )}
         <li>
-          <Link className="flex gap-x-4 items-center" href={"/todos"}>
+          <Link
+            className="flex gap-x-4 items-center hover:text-[#3498DB] transition"
+            href={"/todos"}
+          >
             <AiOutlineCheckCircle /> To-Do List
           </Link>
         </li>
         <li>
-          <Link className="flex gap-x-4 items-center" href={"/calendar"}>
+          <Link
+            className="flex gap-x-4 items-center hover:text-[#3498DB] transition"
+            href={"/calendar"}
+          >
             <AiOutlineCalendar /> Calendar
           </Link>
         </li>
         <li>
-          <Link className="flex gap-x-4 items-center" href={"/goals"}>
+          <Link
+            className="flex gap-x-4 items-center hover:text-[#3498DB] transition"
+            href={"/goals"}
+          >
             <AiOutlineFlag /> Goals
           </Link>
         </li>
         {isLoggedIn && (
           <li>
-            <Link className="flex gap-x-4 items-center" href={"/settings"}>
+            <Link
+              className="flex gap-x-4 items-center hover:text-[#3498DB] transition"
+              href={"/settings"}
+            >
               <AiOutlineSetting />
               Settings
             </Link>
@@ -60,12 +78,18 @@ function Sidebar() {
           {!isLoggedIn ? (
             <>
               <li>
-                <Link className="flex gap-x-4 items-center" href={"/log-in"}>
+                <Link
+                  className="flex gap-x-4 items-center hover:text-[#3498DB] transition"
+                  href={"/log-in"}
+                >
                   <FaSignInAlt /> Log In
                 </Link>
               </li>
               <li>
-                <Link className="flex gap-x-4 items-center" href={"/sign-up"}>
+                <Link
+                  className="flex gap-x-4 items-center hover:text-[#3498DB] transition"
+                  href={"/sign-up"}
+                >
                   <FaUserPlus /> Sign Up
                 </Link>
               </li>

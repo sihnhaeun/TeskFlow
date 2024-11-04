@@ -1,6 +1,3 @@
-Need to install the following packages:
-supabase@1.207.9
-Ok to proceed? (y) 
 export type Json =
   | string
   | number
@@ -12,7 +9,63 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      todos: {
+        Row: {
+          authorId: string
+          category: string
+          createdAt: string
+          description: string
+          dueDate: string
+          id: number
+          isCompleted: boolean
+          priority: string
+          title: string
+        }
+        Insert: {
+          authorId?: string
+          category: string
+          createdAt?: string
+          description: string
+          dueDate: string
+          id?: number
+          isCompleted: boolean
+          priority: string
+          title: string
+        }
+        Update: {
+          authorId?: string
+          category?: string
+          createdAt?: string
+          description?: string
+          dueDate?: string
+          id?: number
+          isCompleted?: boolean
+          priority?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      user: {
+        Row: {
+          created_at: string
+          id: number
+          nickname: string
+          userId: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          nickname: string
+          userId?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          nickname?: string
+          userId?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
