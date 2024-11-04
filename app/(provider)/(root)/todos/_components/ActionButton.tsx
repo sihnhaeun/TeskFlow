@@ -3,12 +3,16 @@ import { Dispatch, SetStateAction } from "react";
 type ActionButtonProps = {
   priorityAndCategory: string;
   buttonLabel: string;
+  bg: string;
+  hover: string;
   setPriorityAndCategory: Dispatch<SetStateAction<string>>;
 };
 
 function ActionButton({
   priorityAndCategory,
   buttonLabel,
+  bg,
+  hover,
   setPriorityAndCategory,
 }: ActionButtonProps) {
   const handleClick = () => {
@@ -17,10 +21,14 @@ function ActionButton({
 
   return (
     <button
-      onClick={() => handleClick()}
+      onClick={handleClick}
       type="button"
-      className={`w-full mt-4 border rounded-lg px-5 py-4 bg-white hover:border-black active:brightness-95
-        ${priorityAndCategory === buttonLabel ? "border-black" : "border"}
+      className={`w-full mt-4 border rounded-lg px-5 py-4
+        ${
+          priorityAndCategory === buttonLabel
+            ? `${bg} ${hover} text-white`
+            : "bg-gray-300 hover:bg-gray-400"
+        } 
         transition`}
     >
       {buttonLabel}
