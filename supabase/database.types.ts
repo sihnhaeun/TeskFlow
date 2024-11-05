@@ -45,21 +45,21 @@ export type Database = {
         }
         Relationships: []
       }
-      user: {
+      users: {
         Row: {
-          created_at: string
+          createdAt: string
           id: number
           nickname: string
           userId: string
         }
         Insert: {
-          created_at?: string
+          createdAt?: string
           id?: number
           nickname: string
           userId?: string
         }
         Update: {
-          created_at?: string
+          createdAt?: string
           id?: number
           nickname?: string
           userId?: string
