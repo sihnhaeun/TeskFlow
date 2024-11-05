@@ -21,7 +21,7 @@ function SignUpPage() {
   const handleSubmitForm: ComponentProps<"form">["onSubmit"] = async (e) => {
     e.preventDefault();
 
-    if (!email || !password || !rePassword)
+    if (!email || !password || !rePassword || !nickname)
       return alert("Please fill in all fields");
     if (!email.includes("@") || !email.includes("."))
       return alert("Invalid email format");
@@ -29,6 +29,7 @@ function SignUpPage() {
       return alert("Password must be at least 8 characters long");
     if (password !== rePassword) return alert("Passwords do not match");
 
+    // 회원가입
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -37,7 +38,18 @@ function SignUpPage() {
       console.log("sign-up error", error);
       return alert("Sign-up failed. Please try again");
     }
-    // 닉네임 user 테이블에 insert하기
+
+    // 닉네임
+    const a = await supabase.from("users").select("*");
+    console.log(a);
+
+    const { data, error: dataError } = await supabase
+      .from("users")
+      .insert({ nickname });
+    if (dataError) return console.log("dataError", dataError);
+    else {
+      console.log(data);
+    }
 
     setIsLoggedIn(true);
     router.push("/");
