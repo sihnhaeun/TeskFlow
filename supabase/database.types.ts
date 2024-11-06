@@ -9,6 +9,38 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      dashboard: {
+        Row: {
+          createdAt: string
+          id: number
+          memo: string
+          todoId: number | null
+          userId: string
+        }
+        Insert: {
+          createdAt?: string
+          id?: number
+          memo: string
+          todoId?: number | null
+          userId?: string
+        }
+        Update: {
+          createdAt?: string
+          id?: number
+          memo?: string
+          todoId?: number | null
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dashboard_todoId_fkey"
+            columns: ["todoId"]
+            isOneToOne: false
+            referencedRelation: "todos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       todos: {
         Row: {
           authorId: string
@@ -16,6 +48,7 @@ export type Database = {
           createdAt: string
           description: string
           dueDate: string
+          dueTime: string
           id: number
           isCompleted: boolean
           priority: string
@@ -24,9 +57,10 @@ export type Database = {
         Insert: {
           authorId?: string
           category: string
-          createdAt?: string
+          createdAt: string
           description: string
           dueDate: string
+          dueTime: string
           id?: number
           isCompleted: boolean
           priority: string
@@ -38,6 +72,7 @@ export type Database = {
           createdAt?: string
           description?: string
           dueDate?: string
+          dueTime?: string
           id?: number
           isCompleted?: boolean
           priority?: string
