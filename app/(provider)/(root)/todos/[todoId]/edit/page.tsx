@@ -1,6 +1,6 @@
 "use client";
 
-import { supabase } from "@/supabase/client";
+import api from "@/api/api";
 import { Tables } from "@/supabase/database.types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,11 +14,7 @@ function EditPage() {
 
   useEffect(() => {
     (async () => {
-      const { data: todo, error } = await supabase
-        .from("todos")
-        .select("*")
-        .eq("id", Number(todoId))
-        .single();
+      const { data: todo, error } = await api.todosApi.getTodo(Number(todoId));
 
       if (error) return console.log("edit page error", error);
 
