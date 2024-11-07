@@ -1,5 +1,6 @@
 "use client";
 
+import api from "@/api/api";
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
@@ -33,16 +34,13 @@ function TodoCard({
 
   useEffect(() => {
     const fetchTodos = async () => {
-      const { data: todos, error: todosError } = await supabase
-        .from("todos")
-        .select("*")
-        .order("isCompleted");
+      const todos = await api.todosApi.getTodos({
+        filter: "order",
+        column: "isCompleted",
+        value: "null",
+      });
 
-      if (todosError) {
-        console.log("todos Error", todosError);
-        return;
-      }
-
+      if (!todos) return console.log("todos error", todos);
       setTodos(todos);
 
       // 오늘 날짜

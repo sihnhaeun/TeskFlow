@@ -1,6 +1,6 @@
 "use client";
 
-import { supabase } from "@/supabase/client";
+import api from "@/api/api";
 import { Tables } from "@/supabase/database.types";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
@@ -23,7 +23,7 @@ function TodoForm({ label, todo, todoId }: TodoFormProps) {
   // Add Todo
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [dueDate, setDueDay] = useState("");
+  const [dueDate, setDueDate] = useState("");
   const [dueTime, setDueTime] = useState("");
   const [priority, setPriority] = useState("");
   const [category, setCategory] = useState("");
@@ -43,8 +43,7 @@ function TodoForm({ label, todo, todoId }: TodoFormProps) {
       return alert("Please fill in all fields to create a To-Do item");
 
     if (!todoId) {
-      // 추가
-      const { error: addError } = await supabase.from("todos").insert({
+      const { error: insertError } = await api.todosApi.insertTodo({
         title,
         description,
         dueDate,
@@ -55,31 +54,28 @@ function TodoForm({ label, todo, todoId }: TodoFormProps) {
         createdAt: today,
       });
 
-      if (addError) {
+      if (insertError) {
         alert("Todo item added failed!");
-        return console.log("todo add error", addError);
+        return console.log("todo insert error", insertError);
       } else {
         alert("Todo item added successfully!");
         router.push("/todos");
       }
     } else {
       // 수정
-      const { error: updateError } = await supabase
-        .from("todos")
-        .update({
-          title,
-          description,
-          category,
-          dueDay: dueDate,
-          dueTime,
-          isCompleted: todo?.isCompleted,
-          priority,
-        })
-        .eq("id", todoId)
-        .single();
+      const { error: updateError } = await api.todosApi.updateTodo({
+        title,
+        description,
+        dueDate,
+        dueTime,
+        priority,
+        category,
+        isCompleted: todo?.isCompleted,
+        todoId: todoId,
+      });
       if (updateError) {
         alert("Todo item added failed!");
-        return console.log("todo add error", updateError);
+        return console.log("todo updated error", updateError);
       } else {
         alert("Todo item updated successfully!");
         router.push("/todos");
@@ -89,7 +85,7 @@ function TodoForm({ label, todo, todoId }: TodoFormProps) {
 
   useEffect(() => {
     if (todo) {
-      setDueDay(todo?.dueDate);
+      setDueDate(todo?.dueDate);
       setDueTime(todo?.dueTime);
     }
   }, [todo]);
@@ -193,7 +189,7 @@ function TodoForm({ label, todo, todoId }: TodoFormProps) {
         <div className="flex gap-x-4 w-full">
           <input
             value={dueDate}
-            onChange={(e) => setDueDay(e.target.value)}
+            onChange={(e) => setDueDate(e.target.value)}
             className="border rounded-lg w-full px-5 py-4"
             type="date"
             id={"Due Date"}
