@@ -9,7 +9,12 @@ function AddPage() {
       title="Add a New To-Do"
       subtitle="Please fill in all fields to create a To-Do item"
     >
-      <TodoForm todo={null} todoId={null} label="Add To-Do"></TodoForm>
+      <TodoForm
+        variantStyle="secondary"
+        todo={null}
+        todoId={null}
+        label="Add To-Do"
+      ></TodoForm>
     </Page>
   );
 }

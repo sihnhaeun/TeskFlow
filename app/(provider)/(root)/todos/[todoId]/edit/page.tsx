@@ -28,7 +28,12 @@ function EditPage() {
       subtitle="Make sure to save your changes!"
     >
       <div className="w-full">
-        <TodoForm todo={todo} todoId={todoId} label="Edit To-Do"></TodoForm>
+        <TodoForm
+          variantStyle="secondary"
+          todo={todo}
+          todoId={todoId}
+          label="Edit To-Do"
+        ></TodoForm>
       </div>
     </Page>
   );

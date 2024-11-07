@@ -1,7 +1,6 @@
 "use client";
 
 import api from "@/api/api";
-import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import dayjs from "dayjs";
@@ -32,41 +31,36 @@ function TodoCard({
   const [dueDate, setDueDate] = useState<Tables<"todos">[]>([]);
   const [filteredTodos, setFilteredTodos] = useState<Tables<"todos">[]>([]);
 
+  const fetchTodos = async () => {
+    const { data: todos, error: todosError } = await api.todosApi.getTodos();
+    if (todosError) return console.log("todos error", todosError);
+    setTodos(todos);
+
+    // 오늘 날짜
+    const day = dayjs().format("YYYY-MM-DD");
+
+    // 오늘의 투두
+    const { data: todayData, error: todayError } = await api.todosApi.eqTodos({
+      column: "createdAt",
+      value: day,
+    });
+
+    if (todayError) {
+      return console.log("Today Error", todayError);
+    }
+    setToday(todayData);
+
+    // 마감일 투두
+    const { data: dueDateData, error: dueDateError } =
+      await api.todosApi.eqTodos({ column: "dueDate", value: day });
+
+    if (dueDateError) {
+      return console.log("Due Date Error:", dueDateError);
+    }
+    setDueDate(dueDateData);
+  };
+
   useEffect(() => {
-    const fetchTodos = async () => {
-      const todos = await api.todosApi.getTodos({
-        filter: "order",
-        column: "isCompleted",
-        value: "null",
-      });
-
-      if (!todos) return console.log("todos error", todos);
-      setTodos(todos);
-
-      // 오늘 날짜
-      const day = dayjs().format("YYYY-MM-DD");
-
-      // 오늘의 투두
-      const { data: todayData, error: todayError } = await supabase
-        .from("todos")
-        .select("*")
-        .eq("createdAt", day);
-      if (todayError) {
-        return console.log("Today Error", todayError);
-      }
-      setToday(todayData);
-
-      // 마감일 투두
-      const { data: dueDateData, error: dueDateError } = await supabase
-        .from("todos")
-        .select("*")
-        .eq("dueDate", day);
-      if (dueDateError) {
-        return console.log("Due Date Error:", dueDateError);
-      }
-      setDueDate(dueDateData);
-    };
-
     fetchTodos();
   }, []);
 
@@ -90,10 +84,9 @@ function TodoCard({
     // 상태 업데이트
     setFilteredTodos(categoryFilter);
   }, [value, todos, today, dueDate, category]);
-
   return (
     <div
-      className={`border-[3px] border-${borderColor} bg-${bgColor} rounded-lg px-2 py-3 w-full`}
+      className={`border-[3px] ${borderColor} ${bgColor} rounded-lg px-2 py-3 w-full`}
     >
       <h5 className="font-bold mb-3">{title}</h5>
       <div className="w-[350px] max-h-[400px] overflow-y-auto px-2">
@@ -135,9 +128,15 @@ function TodoCard({
                 </p>
 
                 <div className="flex mt-4">
-                  <IsCompletedButton setTodos={setTodos} todos={[todo]} />
+                  <IsCompletedButton
+                    fetchTodos={fetchTodos}
+                    setTodos={setTodos}
+                    todos={[todo]}
+                  />
                   <span className="ml-auto">
-                    <DeleteButton todoId={todo.id}>Delete</DeleteButton>
+                    <DeleteButton fetchTodos={fetchTodos} todoId={todo.id}>
+                      Delete
+                    </DeleteButton>
                   </span>
                 </div>
               </li>
