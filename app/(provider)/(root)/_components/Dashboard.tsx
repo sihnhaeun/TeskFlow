@@ -18,7 +18,7 @@ function Dashboard() {
         .update({ memo })
         .eq("userId", currentUserId);
       if (error) {
-        console.error("Error inserting memo:", error);
+        console.error("Error inserting memo", error);
       }
     }
   };
