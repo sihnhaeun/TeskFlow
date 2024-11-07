@@ -1,20 +1,7 @@
 import { supabase } from "@/supabase/client";
 
-type getTodosProps = {
-  filter: string;
-  column: string;
-  value: any;
-};
-
-async function getTodos({ filter, column, value }: getTodosProps) {
-  let data = supabase.from("todos").select("*");
-  if (filter === "eq") {
-    data = data.eq(column, value);
-  } else if (filter === "order") {
-    data = data.order(column);
-  }
-
-  const { data: todos, error } = await data;
+async function getTodos() {
+  const todos = await supabase.from("todos").select("*").order("isCompleted");
 
   return todos;
 }
@@ -25,6 +12,26 @@ async function getTodo(todoId: number) {
     .select("*")
     .eq("id", todoId)
     .single();
+
+  return todos;
+}
+
+type eqTodosProps = {
+  column:
+    | "createdAt"
+    | "id"
+    | "authorId"
+    | "category"
+    | "description"
+    | "dueDate"
+    | "dueTime"
+    | "isCompleted"
+    | "priority"
+    | "title";
+  value: NonNullable<string | number | boolean>;
+};
+async function eqTodos({ column, value }: eqTodosProps) {
+  const todos = await supabase.from("todos").select("*").eq(column, value);
 
   return todos;
 }
@@ -104,6 +111,7 @@ async function updateTodo({
 export default {
   getTodos,
   getTodo,
+  eqTodos,
   insertTodo,
   updateTodo,
 };

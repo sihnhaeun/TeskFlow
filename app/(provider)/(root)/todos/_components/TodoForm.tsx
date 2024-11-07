@@ -13,9 +13,10 @@ type TodoFormProps = {
   label: string;
   todo: Tables<"todos"> | undefined | null;
   todoId: string | string[] | undefined | null;
+  variantStyle?: "primary" | "signUp" | "secondary";
 };
 
-function TodoForm({ label, todo, todoId }: TodoFormProps) {
+function TodoForm({ label, todo, todoId, variantStyle }: TodoFormProps) {
   const router = useRouter();
 
   const today = dayjs().format("YYYY-MM-DD");
@@ -206,7 +207,7 @@ function TodoForm({ label, todo, todoId }: TodoFormProps) {
         </div>
       </div>
 
-      <DefaultButton>{label}</DefaultButton>
+      <DefaultButton variantStyle={variantStyle}>{label}</DefaultButton>
     </form>
   );
 }

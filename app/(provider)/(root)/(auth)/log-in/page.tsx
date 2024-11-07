@@ -60,7 +60,7 @@ function LogInPage() {
           id={"password"}
         />
 
-        <DefaultButton>Log In</DefaultButton>
+        <DefaultButton variantStyle="primary">Log In</DefaultButton>
       </form>
     </Page>
   );

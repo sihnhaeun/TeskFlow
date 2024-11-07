@@ -4,13 +4,15 @@ import { Dispatch, SetStateAction } from "react";
 import { FiCheck, FiX } from "react-icons/fi";
 
 type IsCompletedButton = {
+  fetchTodos: () => Promise<void>;
   setTodos: Dispatch<SetStateAction<Tables<"todos">[]>>;
   todos: Tables<"todos">[];
 };
 
-function IsCompletedButton({ setTodos, todos }: IsCompletedButton) {
+function IsCompletedButton({ fetchTodos, setTodos, todos }: IsCompletedButton) {
   // GPT..>.<
   const handleToggleButton = async (todoId: number) => {
+    fetchTodos();
     const todoToToggle = todos.find((todo) => todo.id === todoId);
     if (!todoToToggle) return;
 

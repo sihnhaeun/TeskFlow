@@ -45,11 +45,11 @@ function Home() {
 
               <div className="flex gap-x-5 w-[600px] mx-auto mt-3">
                 <Link className="w-full" href={"/sign-up"}>
-                  <DefaultButton>Sign Up</DefaultButton>
+                  <DefaultButton variantStyle="signUp">Sign Up</DefaultButton>
                 </Link>
 
                 <Link className="w-full" href={"/log-in"}>
-                  <DefaultButton>Log In</DefaultButton>
+                  <DefaultButton variantStyle="primary">Log In</DefaultButton>
                 </Link>
               </div>
             </div>

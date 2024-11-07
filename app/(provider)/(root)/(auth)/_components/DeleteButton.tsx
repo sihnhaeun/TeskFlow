@@ -2,13 +2,15 @@ import { supabase } from "@/supabase/client";
 import { ReactNode } from "react";
 
 type DeleteButtonProps = {
+  fetchTodos: () => Promise<void>;
   children: ReactNode;
   todoId: number;
 };
 
-function DeleteButton({ children, todoId }: DeleteButtonProps) {
+function DeleteButton({ fetchTodos, children, todoId }: DeleteButtonProps) {
   const handleClickDeleteButton = async () => {
     await supabase.from("todos").delete().eq("id", todoId);
+    fetchTodos();
     return alert("Todo item deleted successfully!");
   };
 

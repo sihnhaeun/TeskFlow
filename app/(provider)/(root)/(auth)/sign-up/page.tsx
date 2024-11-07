@@ -96,7 +96,7 @@ function SignUpPage() {
           id={"rePassword"}
         />
 
-        <DefaultButton>Sign Up</DefaultButton>
+        <DefaultButton variantStyle="signUp">Sign Up</DefaultButton>
       </form>
     </Page>
   );
